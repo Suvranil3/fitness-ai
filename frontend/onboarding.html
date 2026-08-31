@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Murim Fitness AI - Assessment</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;700&amp;family=Geist:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Using Inter as a fallback for Geist if not locally available, but configuring Tailwind to use the token name -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from instructions -->
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-tertiary-fixed": "#321300", "surface-container-low": "#1d1a24", "on-secondary-fixed-variant": "#6e3900", "primary-fixed-dim": "#d3bbff", "on-error-container": "#ffdad6", "on-surface-variant": "#ccc3d7", "primary-container": "#6d28d9", secondary: "#ffb77d", primary: "#d3bbff", "surface-container-highest": "#37333e", surface: "#15121b", background: "#15121b", "on-primary-fixed-variant": "#5b00c5", "on-error": "#690005", "tertiary-container": "#8f4200", "surface-dim": "#15121b", "surface-container": "#221e28", "surface-tint": "#d3bbff", "secondary-fixed-dim": "#ffb77d", "surface-container-lowest": "#100d16", "on-secondary-fixed": "#2f1500", "surface-container-high": "#2c2833", "inverse-surface": "#e8e0ee", "on-secondary": "#4d2600", "secondary-fixed": "#ffdcc3", "on-secondary-container": "#432100", outline: "#958da1", "surface-variant": "#37333e", "inverse-primary": "#7331df", "secondary-container": "#d97707", "inverse-on-surface": "#332f39", "on-tertiary": "#522300", "on-tertiary-container": "#ffc19e", error: "#ffb4ab", "on-tertiary-fixed-variant": "#743400", "on-primary": "#3f008d", "surface-bright": "#3c3742", "tertiary-fixed": "#ffdbc8", "outline-variant": "#4a4455", "on-primary-fixed": "#250059", "on-surface": "#e8e0ee", tertiary: "#ffb68b", "error-container": "#93000a", "tertiary-fixed-dim": "#ffb68b", "on-primary-container": "#dac5ff", "primary-fixed": "#ebddff", "on-background": "#e8e0ee"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"container-max": "1280px", "margin-desktop": "48px", gutter: "24px", unit: "4px", "margin-mobile": "16px"}, fontFamily: {"label-sm": ["Inter", "sans-serif"], "display-lg": ["Bodoni Moda", "serif"], "headline-lg": ["Bodoni Moda", "serif"], "headline-lg-mobile": ["Bodoni Moda", "serif"], "title-md": ["Inter", "sans-serif"], "body-md": ["Inter", "sans-serif"], headline: ["IBM Plex Serif"], display: ["IBM Plex Serif"], body: ["Geist"], label: ["Geist"]}, fontSize: {"label-sm": ["12px", {lineHeight: "1", letterSpacing: "0.1em", fontWeight: "500"}], "display-lg": ["48px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-lg": ["32px", {lineHeight: "1.2", fontWeight: "600"}], "headline-lg-mobile": ["28px", {lineHeight: "1.2", fontWeight: "600"}], "title-md": ["20px", {lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]}}}};</script>
+<style>
+        /* Murim Animations & Custom Styles */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Ethereal Input Fields */
+        .ethereal-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid theme('colors.outline');
+            color: theme('colors.on-surface');
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+            transition: all 0.3s ease;
+        }
+        .ethereal-input:focus {
+            outline: none;
+            box-shadow: none;
+            border-bottom-color: theme('colors.primary');
+            box-shadow: 0 1px 0 0 theme('colors.primary');
+        }
+
+        /* Glass Scroll Effect Container */
+        .jade-scroll {
+            background: linear-gradient(to bottom, theme('colors.surface-container-low/80'), theme('colors.surface-container/90'));
+            backdrop-filter: blur(16px);
+            border: 1px solid theme('colors.primary/10');
+            box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px theme('colors.primary/5');
+            position: relative;
+        }
+        .jade-scroll::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 4px, theme('colors.surface-bright/5') 4px, theme('colors.surface-bright/5') 8px);
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar for results */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-variant'); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+
+        .step-container { display: none; }
+        .step-container.active { display: flex; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex items-center justify-center p-4 md:p-margin-desktop font-body-md overflow-hidden relative selection:bg-primary-container selection:text-on-primary-container">
+<!-- Ambient Background Elements -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-secondary/5 blur-[150px]"></div>
+</div>
+<!-- Main Assessment Container (The Scroll) -->
+<main class="jade-scroll w-full max-w-2xl rounded-2xl h-[870px] max-h-[800px] flex flex-col relative z-10 overflow-hidden">
+<!-- Qi Flow Progress Bar -->
+<div class="h-1 w-full bg-surface-container-highest z-20">
+<div class="h-full bg-primary transition-all duration-700 ease-out w-[20%] shadow-[0_0_10px_theme('colors.primary')]" id="progress-bar"></div>
+</div>
+<div class="flex-1 overflow-y-auto relative z-10 px-6 py-8 md:px-12 md:py-12 flex flex-col">
+<!-- STEP 1: Entrance -->
+<div class="step-container active flex-col h-full justify-center text-center fade-in" id="step-1">
+<span class="material-symbols-outlined text-primary text-6xl mb-6 opacity-80" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4 tracking-tighter">Enter the Formative Realm</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-12 max-w-md mx-auto">
+                    To prescribe the correct cultivation manual, the system must assess your current physical vessel and inner intent. Reveal your true parameters.
+                </p>
+<button class="mx-auto bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-title-md text-title-md hover:bg-primary transition-colors duration-300 shadow-[0_0_15px_theme('colors.primary-container/50')] hover:shadow-[0_0_25px_theme('colors.primary/60')] flex items-center gap-2 group" onclick="nextStep(2)">
+                    Begin Assessment
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- STEP 2: Physical Attributes -->
+<div class="step-container flex-col h-full justify-start fade-in pt-4" id="step-2">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Vessel Parameters</h2>
+<p class="font-body-md text-body-md text-outline mb-10">Quantify your physical form to calibrate energy requirements.</p>
+<div class="space-y-8 max-w-md">
+<!-- Gender Selection -->
+<div>
+<label class="block font-label-sm text-label-sm text-primary mb-3 uppercase tracking-widest">Biological Base</label>
+<div class="flex gap-4">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="gender" type="radio" value="male"/>
+<div class="p-4 border border-outline-variant rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary-container/10 peer-checked:text-primary transition-all">
+                                    Male
+                                </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="gender" type="radio" value="female"/>
+<div class="p-4 border border-outline-variant rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary-container/10 peer-checked:text-primary transition-all">
+                                    Female
+                                </div>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-primary mb-1 uppercase tracking-widest">Age (Cycles)</label>
+<input class="ethereal-input w-full font-title-md text-title-md py-2" id="input-age" max="120" min="16" placeholder="e.g. 25" type="number"/>
+</div>
+<div class="relative group">
+<label class="block font-label-sm text-label-sm text-primary mb-1 uppercase tracking-widest">Height (cm)</label>
+<input class="ethereal-input w-full font-title-md text-title-md py-2" id="input-height" max="250" min="100" placeholder="e.g. 180" type="number"/>
+</div>
+<div class="relative group col-span-2">
+<label class="block font-label-sm text-label-sm text-primary mb-1 uppercase tracking-widest">Current Mass (kg)</label>
+<input class="ethereal-input w-full font-title-md text-title-md py-2" id="input-weight" max="300" min="30" placeholder="e.g. 75" type="number"/>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-8 flex justify-between items-center">
+<button class="text-outline hover:text-primary transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1" onclick="prevStep(1)">
+<span class="material-symbols-outlined text-sm">arrow_back</span> Return
+                    </button>
+<button class="bg-surface-variant text-on-surface px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2" onclick="validateAndNext(2, 3)">
+                        Next Phase <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 3: Goals -->
+<div class="step-container flex-col h-full justify-start fade-in pt-4" id="step-3">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Cultivation Intent</h2>
+<p class="font-body-md text-body-md text-outline mb-8">What is the primary objective of your training?</p>
+<div class="space-y-4 flex-1 overflow-y-auto pr-2">
+<!-- Goal Cards -->
+<label class="block cursor-pointer group">
+<input checked="" class="peer sr-only" name="goal" type="radio" value="strength"/>
+<div class="p-5 rounded-xl border border-outline-variant bg-surface-container-low peer-checked:border-secondary peer-checked:bg-secondary/5 transition-all flex items-start gap-4 hover:border-secondary/50">
+<div class="p-3 rounded-lg bg-surface peer-checked:bg-secondary/20 text-on-surface-variant peer-checked:text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Body Forging (Strength &amp; Mass)</h3>
+<p class="text-sm text-on-surface-variant">Prioritize muscular hypertrophy and pure physical power output. Caloric surplus required.</p>
+</div>
+</div>
+</label>
+<label class="block cursor-pointer group">
+<input class="peer sr-only" name="goal" type="radio" value="fatloss"/>
+<div class="p-5 rounded-xl border border-outline-variant bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/5 transition-all flex items-start gap-4 hover:border-primary/50">
+<div class="p-3 rounded-lg bg-surface peer-checked:bg-primary/20 text-on-surface-variant peer-checked:text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Marrow Cleansing (Fat Loss)</h3>
+<p class="text-sm text-on-surface-variant">Shed impurities and reduce body fat percentage while preserving essential lean tissue. Caloric deficit required.</p>
+</div>
+</div>
+</label>
+<label class="block cursor-pointer group">
+<input class="peer sr-only" name="goal" type="radio" value="endurance"/>
+<div class="p-5 rounded-xl border border-outline-variant bg-surface-container-low peer-checked:border-tertiary peer-checked:bg-tertiary/5 transition-all flex items-start gap-4 hover:border-tertiary/50">
+<div class="p-3 rounded-lg bg-surface peer-checked:bg-tertiary/20 text-on-surface-variant peer-checked:text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Breath Mastery (Endurance)</h3>
+<p class="text-sm text-on-surface-variant">Enhance cardiovascular capacity and stamina. Sustained energy output focus.</p>
+</div>
+</div>
+</label>
+</div>
+<div class="mt-6 pt-4 flex justify-between items-center border-t border-outline-variant/30">
+<button class="text-outline hover:text-primary transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1" onclick="prevStep(2)">
+<span class="material-symbols-outlined text-sm">arrow_back</span> Return
+                    </button>
+<button class="bg-surface-variant text-on-surface px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2" onclick="nextStep(4)">
+                        Next Phase <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 4: Activity Level -->
+<div class="step-container flex-col h-full justify-start fade-in pt-4" id="step-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Current Realm</h2>
+<p class="font-body-md text-body-md text-outline mb-8">Define your baseline kinetic activity to calculate daily energy expenditure.</p>
+<div class="space-y-3 flex-1 overflow-y-auto pr-2">
+<label class="block cursor-pointer group">
+<input checked="" class="peer sr-only" name="activity" type="radio" value="1.2"/>
+<div class="px-5 py-4 rounded-lg border border-outline-variant bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/10 transition-all flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-on-surface text-base">Sedentary Scholar</h3>
+<p class="text-xs text-on-surface-variant">Little to no exercise, desk job.</p>
+</div>
+<span class="material-symbols-outlined text-outline peer-checked:text-primary">chair</span>
+</div>
+</label>
+<label class="block cursor-pointer group">
+<input class="peer sr-only" name="activity" type="radio" value="1.375"/>
+<div class="px-5 py-4 rounded-lg border border-outline-variant bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/10 transition-all flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-on-surface text-base">Novice Disciple</h3>
+<p class="text-xs text-on-surface-variant">Light exercise 1-3 days/week.</p>
+</div>
+<span class="material-symbols-outlined text-outline peer-checked:text-primary">directions_walk</span>
+</div>
+</label>
+<label class="block cursor-pointer group">
+<input class="peer sr-only" name="activity" type="radio" value="1.55"/>
+<div class="px-5 py-4 rounded-lg border border-outline-variant bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/10 transition-all flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-on-surface text-base">Adept Cultivator</h3>
+<p class="text-xs text-on-surface-variant">Moderate exercise 3-5 days/week.</p>
+</div>
+<span class="material-symbols-outlined text-outline peer-checked:text-primary">sports_gymnastics</span>
+</div>
+</label>
+<label class="block cursor-pointer group">
+<input class="peer sr-only" name="activity" type="radio" value="1.725"/>
+<div class="px-5 py-4 rounded-lg border border-outline-variant bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/10 transition-all flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-on-surface text-base">Core Formation</h3>
+<p class="text-xs text-on-surface-variant">Heavy exercise 6-7 days/week.</p>
+</div>
+<span class="material-symbols-outlined text-outline peer-checked:text-primary">fitness_center</span>
+</div>
+</label>
+</div>
+<div class="mt-6 pt-4 flex justify-between items-center border-t border-outline-variant/30">
+<button class="text-outline hover:text-primary transition-colors font-label-sm text-label-sm uppercase flex items-center gap-1" onclick="prevStep(3)">
+<span class="material-symbols-outlined text-sm">arrow_back</span> Return
+                    </button>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-primary-fixed shadow-[0_0_15px_theme('colors.primary/40')] transition-all flex items-center gap-2" onclick="calculateAndShowResults()">
+                        Synthesize Core <span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</div>
+<!-- STEP 5: Results Dashboard -->
+<div class="step-container flex-col h-full justify-start fade-in pt-2" id="step-5">
+<div class="text-center mb-6">
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-[0.2em] mb-2">Assessment Complete</p>
+<h2 class="font-display-lg text-display-lg text-primary leading-tight">Foundation Established</h2>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<!-- Status Cards -->
+<div class="bg-surface-container/50 border border-outline-variant/50 rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Base Qi Rate (BMR)</span>
+<span class="font-headline-lg text-headline-lg text-on-surface" id="res-bmr">---</span>
+<span class="text-xs text-on-surface-variant mt-1">kcal/day</span>
+</div>
+<div class="bg-surface-container/50 border border-outline-variant/50 rounded-xl p-4 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Total Output (TDEE)</span>
+<span class="font-headline-lg text-headline-lg text-secondary" id="res-tdee">---</span>
+<span class="text-xs text-on-surface-variant mt-1">kcal/day</span>
+</div>
+</div>
+<div class="bg-surface-container border border-primary/20 rounded-xl p-5 mb-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<h3 class="font-title-md text-title-md text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">pie_chart</span> Target Macros
+                    </h3>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Protein (Body Forging)</span>
+<span class="font-medium text-on-surface" id="res-protein">--g</span>
+</div>
+<div class="w-full bg-surface-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 35%"></div>
+</div>
+<div class="flex justify-between items-center text-sm mt-1">
+<span class="text-on-surface-variant">Carbs (Qi Reserves)</span>
+<span class="font-medium text-on-surface" id="res-carbs">--g</span>
+</div>
+<div class="w-full bg-surface-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between items-center text-sm mt-1">
+<span class="text-on-surface-variant">Fats (Core Essence)</span>
+<span class="font-medium text-on-surface" id="res-fats">--g</span>
+</div>
+<div class="w-full bg-surface-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full" style="width: 20%"></div>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-title-md text-title-md hover:bg-primary-fixed shadow-[0_0_20px_theme('colors.primary/30')] transition-all">
+                        Enter the Inner Sect
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Form Logic
+        function updateProgress(step) {
+            const totalSteps = 5;
+            const percentage = (step / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+        }
+
+        function showStep(stepNum) {
+            document.querySelectorAll('.step-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            const target = document.getElementById(`step-${stepNum}`);
+            if(target) {
+                target.classList.add('active');
+                // Re-trigger animation
+                target.classList.remove('fade-in');
+                void target.offsetWidth; // trigger reflow
+                target.classList.add('fade-in');
+            }
+            updateProgress(stepNum);
+        }
+
+        function nextStep(stepNum) {
+            showStep(stepNum);
+        }
+
+        function prevStep(stepNum) {
+            showStep(stepNum);
+        }
+
+        function validateAndNext(currentStep, nextStepNum) {
+            if (currentStep === 2) {
+                const age = document.getElementById('input-age').value;
+                const height = document.getElementById('input-height').value;
+                const weight = document.getElementById('input-weight').value;
+                
+                if (!age || !height || !weight) {
+                    // Simple visual shake or alert could go here, keeping it minimal
+                    alert("Please focus your intent and fill all physical parameters.");
+                    return;
+                }
+            }
+            nextStep(nextStepNum);
+        }
+
+        function calculateAndShowResults() {
+            // Gather Data
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const age = parseFloat(document.getElementById('input-age').value);
+            const height = parseFloat(document.getElementById('input-height').value); // cm
+            const weight = parseFloat(document.getElementById('input-weight').value); // kg
+            const goal = document.querySelector('input[name="goal"]:checked').value;
+            const activityMultiplier = parseFloat(document.querySelector('input[name="activity"]:checked').value);
+
+            // 1. Calculate BMR (Mifflin-St Jeor)
+            let bmr = 0;
+            if (gender === 'male') {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+
+            // 2. Calculate TDEE
+            let tdee = bmr * activityMultiplier;
+
+            // 3. Adjust for Goal
+            let targetCalories = tdee;
+            if (goal === 'strength') {
+                targetCalories += 300; // Caloric surplus
+            } else if (goal === 'fatloss') {
+                targetCalories -= 500; // Caloric deficit
+            }
+
+            // 4. Calculate rough Macros based on target calories
+            // standard split: 30% Protein, 45% Carbs, 25% Fat roughly, adjusted slightly
+            let proteinGrams = (weight * 2.2); // ~1g per lb of bodyweight is a safe generic fitness baseline
+            if(goal === 'strength') proteinGrams = (weight * 2.4); // higher for mass
+            
+            const proteinCals = proteinGrams * 4;
+            let fatCals = targetCalories * 0.25; // 25% fats
+            let fatGrams = fatCals / 9;
+            
+            let carbCals = targetCalories - proteinCals - fatCals;
+            let carbGrams = carbCals / 4;
+
+            // Update UI
+            document.getElementById('res-bmr').textContent = Math.round(bmr);
+            document.getElementById('res-tdee').textContent = Math.round(targetCalories); // Showing adjusted target as TDEE/Goal
+            
+            document.getElementById('res-protein').textContent = `${Math.round(proteinGrams)}g`;
+            document.getElementById('res-carbs').textContent = `${Math.round(carbGrams)}g`;
+            document.getElementById('res-fats').textContent = `${Math.round(fatGrams)}g`;
+
+            // Transition to final step
+            showStep(5);
+        }
+
+        // Initialize progress bar width
+        updateProgress(1);
+    </script>
+</body></html>

@@ -5,10 +5,14 @@ from goal import calculate_goal_calories
 from macros import calculate_macros, calculate_water
 from workout_generator import generate_workout
 from meal_planner import generate_meal_plan
+from save_user import save_user
 
 print("=" * 40)
 print("       FITNESS AI ASSISTANT")
 print("=" * 40)
+
+# USER INFO
+name = input("\nEnter your name: ")
 
 # Weight
 weight = float(input("Enter your weight (kg): "))
@@ -85,6 +89,10 @@ macros = calculate_macros(
     goal_calories
 )
 
+if macros is None:
+    print("Error calculating macros.")
+    exit()
+
 water = calculate_water(weight)
 
 # FITNESS QUESTIONNAIRE
@@ -104,6 +112,7 @@ location = int(input("Choose location (1-2): "))
 days = int(input("\nWorkout days per week (3-6): "))
 time_available = int(input("Workout duration in minutes: "))
 
+# DIET TYPE
 print("\nDiet Type")
 print("1. Vegetarian")
 print("2. Non-Vegetarian")
@@ -115,6 +124,7 @@ if diet_choice == 1:
 else:
     diet_type = "nonveg"
 
+# MEAL PLAN
 meal_plan = generate_meal_plan(
     goal,
     diet_type
@@ -129,7 +139,16 @@ workout_plan = generate_workout(
     time_available
 )
 
-
+# SAVE USER TO SUPABASE
+save_user(
+    name,
+    age,
+    gender,
+    height_cm,
+    weight,
+    selected_goal,
+    diet_type
+)
 
 # PROFILE NAMES
 level_names = {
@@ -149,6 +168,7 @@ location_name = location_names.get(location, "Unknown")
 # RESULTS
 print("\n===== RESULTS =====")
 
+print(f"Name: {name}")
 print(f"BMI: {bmi}")
 print(f"Category: {category}")
 
@@ -178,14 +198,13 @@ for day, exercises in workout_plan.items():
     for exercise in exercises:
         print(f" - {exercise}")
 
-    
-
- 
- 
 print("\n===== MEAL PLAN =====")
+
 for meal, foods in meal_plan.items():
 
     print(f"\n{meal}")
 
     for food in foods:
         print(f" - {food}")
+
+print("\nUser successfully saved to Supabase!")

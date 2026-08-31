@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Progress Analytics - Murim Fitness AI</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;700&amp;family=Geist:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts for Bodoni Moda and Geist -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-tertiary-fixed": "#321300", "surface-container-low": "#1d1a24", "on-secondary-fixed-variant": "#6e3900", "primary-fixed-dim": "#d3bbff", "on-error-container": "#ffdad6", "on-surface-variant": "#ccc3d7", "primary-container": "#6d28d9", secondary: "#ffb77d", primary: "#d3bbff", "surface-container-highest": "#37333e", surface: "#15121b", background: "#15121b", "on-primary-fixed-variant": "#5b00c5", "on-error": "#690005", "tertiary-container": "#8f4200", "surface-dim": "#15121b", "surface-container": "#221e28", "surface-tint": "#d3bbff", "secondary-fixed-dim": "#ffb77d", "surface-container-lowest": "#100d16", "on-secondary-fixed": "#2f1500", "surface-container-high": "#2c2833", "inverse-surface": "#e8e0ee", "on-secondary": "#4d2600", "secondary-fixed": "#ffdcc3", "on-secondary-container": "#432100", outline: "#958da1", "surface-variant": "#37333e", "inverse-primary": "#7331df", "secondary-container": "#d97707", "inverse-on-surface": "#332f39", "on-tertiary": "#522300", "on-tertiary-container": "#ffc19e", error: "#ffb4ab", "on-tertiary-fixed-variant": "#743400", "on-primary": "#3f008d", "surface-bright": "#3c3742", "tertiary-fixed": "#ffdbc8", "outline-variant": "#4a4455", "on-primary-fixed": "#250059", "on-surface": "#e8e0ee", tertiary: "#ffb68b", "error-container": "#93000a", "tertiary-fixed-dim": "#ffb68b", "on-primary-container": "#dac5ff", "primary-fixed": "#ebddff", "on-background": "#e8e0ee"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"container-max": "1280px", "margin-desktop": "48px", gutter: "24px", unit: "4px", "margin-mobile": "16px"}, fontFamily: {"label-sm": ["Geist"], "display-lg": ["Bodoni Moda"], "headline-lg": ["Bodoni Moda"], "headline-lg-mobile": ["Bodoni Moda"], "title-md": ["Geist"], "body-md": ["Geist"], headline: ["IBM Plex Serif"], display: ["IBM Plex Serif"], body: ["Geist"], label: ["Geist"]}, fontSize: {"label-sm": ["12px", {lineHeight: "1", letterSpacing: "0.1em", fontWeight: "500"}], "display-lg": ["48px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-lg": ["32px", {lineHeight: "1.2", fontWeight: "600"}], "headline-lg-mobile": ["28px", {lineHeight: "1.2", fontWeight: "600"}], "title-md": ["20px", {lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}]}}}};</script>
+<style>
+        /* Murim Animations & Specific Styles */
+        @keyframes pulse-aura {
+            0%, 100% { opacity: 0.5; transform: scale(1); filter: blur(20px); }
+            50% { opacity: 0.8; transform: scale(1.05); filter: blur(30px); }
+        }
+        
+        @keyframes shimmer-line {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .qi-gradient-border {
+            position: relative;
+        }
+        .qi-gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(211, 187, 255, 0.4) 0%, rgba(211, 187, 255, 0) 50%, rgba(255, 183, 125, 0.2) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .chart-grid-line {
+            stroke: rgba(204, 195, 215, 0.1);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .glass-panel {
+            background: rgba(34, 30, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { width: 0px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 w-full fixed top-0 z-40 bg-surface/60 backdrop-blur-md border-b border-primary/10 flat no shadows md:ml-64 md:max-w-[calc(100%-16rem)]">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary italic hidden md:block">Murim Fitness AI</h1>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary italic md:hidden">Murim AI</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border border-secondary/30 bg-surface-container/50">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Master Rank</span>
+<span class="material-symbols-outlined text-secondary" style="font-size: 16px;">workspace_premium</span>
+</div>
+<button aria-label="Notifications" class="text-on-surface-variant hover:text-secondary transition-colors focus:ring-1 focus:ring-primary/50 rounded-full p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="Quick Action" class="text-on-surface-variant hover:text-secondary transition-colors focus:ring-1 focus:ring-primary/50 rounded-full p-2">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20 p-0.5 relative">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
+<img alt="User Avatar" class="w-full h-full object-cover rounded-full mix-blend-luminosity opacity-80" data-alt="A minimalist, stylized avatar portrait of a martial artist in a dark fantasy setting. The figure is shrouded in shadow, illuminated by a soft, ethereal violet rim light against a pitch-black background, conveying a sense of profound discipline and mysterious power." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtruQEpY4VE3v8pLA50yIv-wRTLL_UW9hfCzYq-XJpv1rNVJLpi0QqSSJLB7hzby50QCMYU5N9WTEp3s5Tc4NgtJVVXdyHAO1IBsHH2XQOy2MFKXl7kh1X6ktnXDlQaDzE6WWjESil2alCLIz8IRVxYMgnsdkvrEScOjv4pPIT28nyg3ohrpRJILyxvSIB2STwLX-8z42zCPC5k4af-zNc4l4Zlmz8s4AvRmQ7bhAn9gEspNHnvcq7Cs_IrMzs1E2vHVfUSRYE4rMx"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen py-8 px-6 bg-surface/80 backdrop-blur-xl border-r border-primary/20 shadow-2xl h-full w-64 fixed left-0 top-0 z-50">
+<div class="mb-12 px-2">
+<div class="font-display-lg text-display-lg text-primary tracking-tighter mb-8 italic">Murim</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-primary/30 relative">
+<img alt="Cultivator Profile Avatar" class="w-full h-full object-cover opacity-70" data-alt="A stylized portrait of a martial arts grandmaster, shrouded in dark robes with glowing violet eyes, set against a deep obsidian void. The lighting is cinematic, highlighting the texture of the fabric and conveying an aura of ancient wisdom and immense inner strength." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiK4d8HCixVcuasFRWXDRkWGghxaHsIYTpeLwws2tv4q0uemH9NaUFtRgISEffvw2bEqFjycCqiGi1ws-8oFr9ZwQt6ZHPFzb_2hZbuOWnHy_khkcHoUlOxRR-szgciZ6USUIHyzdsoDR0lW_gEabgRHXW42gWD6149ra2XLil61ucfvD-uE1XeEnzh9z-rB-wylUb65exkmTOx_w5hUi7Qh5Nhn8qbOShnFirjyaD3turXbLD0KdPDdkryr9bsdn5CVwq2soLVUa6"/>
+</div>
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Murim Master</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Level 42 · Grandmaster</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Inactive -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/10 hover:text-primary transition-all duration-300 group scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/10 hover:text-primary transition-all duration-300 group scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">fitness_center</span>
+<span>Workouts</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/10 hover:text-primary transition-all duration-300 group scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">restaurant</span>
+<span>Meals</span>
+</a>
+<!-- Active Tab: Progress -->
+<a class="flex items-center gap-4 px-4 py-3 bg-primary-container/5 text-primary font-bold border-r-2 border-primary scale-105 transition-transform duration-200 relative overflow-hidden" href="#">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-primary/10 pointer-events-none"></div>
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span>Progress</span>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/10 hover:text-primary transition-all duration-300 group scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">workspace_premium</span>
+<span>Ranks</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/10 hover:text-primary transition-all duration-300 group scale-105 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<button class="mt-auto w-full py-4 rounded-lg bg-gradient-to-r from-primary-container to-inverse-primary text-on-primary-container font-title-md text-title-md hover:brightness-110 transition-all border border-primary/50 relative overflow-hidden group">
+<span class="relative z-10">Begin Training</span>
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+</button>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-28 pb-32 md:pb-12 md:ml-64 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen relative">
+<!-- Ambient Background Texture -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20 mix-blend-overlay" data-alt="A dark, abstract digital painting resembling an ancient martial arts scroll or stone wall in a dimly lit cave. The texture is gritty and porous, mostly deep blacks and charcoals, with very faint, subtle streaks of violet and gold running vertically like veins of mystic energy. Ethereal, minimalist, and atmospheric." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNyGQj3Ghd76gmup45ks1Q8aDgEIuL8d2z7FA879mLvIuFtbsO1haeX8BTOUJnIdKUf9-4R50gvZcygbRz5nd9mizXUyMYhMl8lx9pK0a0o4s6g_g88FgnzF1l-r2yMaXP6sd4VCvRW3U5cXmQiPSEcdbZcHaQ_wT_kkhTeMH_JK6edK5z5LaLTEMILOhMSGWwdAuvf7jUi47H7XoYbgomxnoLGTiZGmnDPfX5SW2VdUi0oIxaYgWU4Kjhrh4S62842J_d1BEkB5fE')"></div>
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-2">Weekly Manifestation</h2>
+<h1 class="font-display-lg text-display-lg text-on-surface">Aura Analysis</h1>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined" style="font-size: 16px;">calendar_month</span>
+<span>Cycle: Deep Winter · Week 4</span>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Hero Section: Aura Growth Visualization -->
+<div class="col-span-1 md:col-span-8 glass-panel qi-gradient-border rounded-2xl p-6 md:p-8 relative overflow-hidden min-h-[400px] flex flex-col">
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full mix-blend-screen" style="animation: pulse-aura 8s infinite alternate;"></div>
+<div class="absolute -bottom-20 -left-20 w-72 h-72 bg-secondary/10 rounded-full mix-blend-screen" style="animation: pulse-aura 12s infinite alternate-reverse;"></div>
+<div class="relative z-10 flex justify-between items-start mb-8">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface">Cultivation Progress</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Energy accumulation over 7 cycles</p>
+</div>
+<div class="px-3 py-1 bg-primary/10 border border-primary/30 rounded text-primary font-label-sm text-label-sm">
+                        +14.2% Flow
+                    </div>
+</div>
+<!-- Abstract Chart Area -->
+<div class="flex-1 relative w-full mt-4 flex items-end">
+<!-- Grid Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<line class="chart-grid-line" x1="0" x2="100%" y1="20%" y2="20%"></line>
+<line class="chart-grid-line" x1="0" x2="100%" y1="40%" y2="40%"></line>
+<line class="chart-grid-line" x1="0" x2="100%" y1="60%" y2="60%"></line>
+<line class="chart-grid-line" x1="0" x2="100%" y1="80%" y2="80%"></line>
+</svg>
+<!-- Mock Line Chart Path (High Contrast Violet) -->
+<svg class="absolute inset-0 w-full h-full z-10" preserveaspectratio="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="auraGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="rgba(211, 187, 255, 0.4)"></stop>
+<stop offset="100%" stop-color="rgba(211, 187, 255, 0)"></stop>
+</lineargradient>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stddeviation="2"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Fill -->
+<polygon fill="url(#auraGrad)" points="0,100 0,70 15,65 30,80 45,50 60,60 75,30 90,40 100,20 100,100"></polygon>
+<!-- Line -->
+<path d="M0,70 L15,65 L30,80 L45,50 L60,60 L75,30 L90,40 L100,20" fill="none" filter="url(#glow)" stroke="#d3bbff" stroke-width="1.5"></path>
+<!-- Data Points -->
+<circle cx="45" cy="50" fill="#15121b" r="1.5" stroke="#d3bbff" stroke-width="1"></circle>
+<circle cx="75" cy="30" fill="#15121b" r="1.5" stroke="#d3bbff" stroke-width="1"></circle>
+<circle cx="100" cy="20" fill="#d3bbff" filter="url(#glow)" r="2"></circle>
+</svg>
+</div>
+</div>
+<!-- Tier Comparison Card -->
+<div class="col-span-1 md:col-span-4 glass-panel qi-gradient-border rounded-2xl p-6 relative flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-6">Realm Shift</h3>
+<div class="flex items-center justify-between mb-8 relative">
+<!-- Decorative connecting line -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-px bg-gradient-to-r from-transparent via-secondary/50 to-transparent"></div>
+<span class="material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-secondary/50 bg-surface px-1 text-[16px]">arrow_forward</span>
+<!-- Previous Tier -->
+<div class="flex flex-col items-center opacity-60">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-2">Previous</span>
+<div class="w-16 h-16 rounded-full border border-outline-variant flex items-center justify-center bg-surface-container">
+<span class="font-display-lg text-[24px] text-outline">III</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface mt-2">Iron Body</span>
+</div>
+<!-- Current Tier -->
+<div class="flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-secondary mb-2">Current</span>
+<div class="w-20 h-20 rounded-full border-2 border-secondary flex items-center justify-center bg-secondary/10 relative shadow-[0_0_15px_rgba(255,183,125,0.2)]">
+<span class="font-display-lg text-[32px] text-secondary">IV</span>
+<!-- Sparkle -->
+<span class="material-symbols-outlined absolute -top-1 -right-1 text-secondary text-[14px]">auto_awesome</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary mt-2 font-bold">Bronze Bone</span>
+</div>
+</div>
+</div>
+<div class="mt-4 border-t border-primary/10 pt-4">
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Your foundation solidifies. Breakthrough to Silver Marrow is imminent if discipline holds.</p>
+</div>
+</div>
+<!-- Quest Consistency (Heatmap/Calendar) -->
+<div class="col-span-1 md:col-span-6 glass-panel qi-gradient-border rounded-2xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">Path Discipline</h3>
+<span class="font-label-sm text-label-sm text-primary px-2 py-1 bg-primary/10 rounded">92% Mastery</span>
+</div>
+<!-- Mock "Heatmap" using flex grid -->
+<div class="grid grid-cols-7 gap-2 md:gap-3">
+<!-- Days Header -->
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">M</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">T</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">W</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">T</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">F</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">S</div>
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant/50">S</div>
+<!-- Nodes (Simulated consistency) -->
+<!-- Row 1 -->
+<div class="aspect-square rounded-sm bg-primary/20 border border-primary/30"></div>
+<div class="aspect-square rounded-sm bg-primary/80 shadow-[0_0_8px_rgba(211,187,255,0.4)]"></div>
+<div class="aspect-square rounded-sm bg-primary/60 border border-primary/50"></div>
+<div class="aspect-square rounded-sm bg-surface-container border border-outline-variant/30"></div>
+<div class="aspect-square rounded-sm bg-primary/90 shadow-[0_0_10px_rgba(211,187,255,0.5)]"></div>
+<div class="aspect-square rounded-sm bg-secondary/80 border border-secondary/50 shadow-[0_0_8px_rgba(255,183,125,0.4)] relative"><span class="absolute inset-0 flex items-center justify-center text-[10px] text-surface font-bold">*</span></div>
+<div class="aspect-square rounded-sm bg-primary/40 border border-primary/20"></div>
+<!-- Row 2 -->
+<div class="aspect-square rounded-sm bg-primary/70 border border-primary/50"></div>
+<div class="aspect-square rounded-sm bg-primary/80 shadow-[0_0_8px_rgba(211,187,255,0.4)]"></div>
+<div class="aspect-square rounded-sm bg-surface-container border border-outline-variant/30"></div>
+<div class="aspect-square rounded-sm bg-primary/50 border border-primary/30"></div>
+<div class="aspect-square rounded-sm bg-primary/90 shadow-[0_0_10px_rgba(211,187,255,0.5)]"></div>
+<div class="aspect-square rounded-sm bg-primary/60 border border-primary/40"></div>
+<div class="aspect-square rounded-sm bg-secondary/90 border border-secondary/50 shadow-[0_0_12px_rgba(255,183,125,0.6)] relative"><span class="absolute inset-0 flex items-center justify-center text-[10px] text-surface font-bold">*</span></div>
+</div>
+<div class="mt-6 flex items-center gap-4 text-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-surface-container border border-outline-variant/30 rounded-sm"></div> Rest</div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-primary/60 rounded-sm"></div> Active</div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-secondary/80 rounded-sm"></div> Peak Performance</div>
+</div>
+</div>
+<!-- Weight Metrics -->
+<div class="col-span-1 md:col-span-3 glass-panel qi-gradient-border rounded-2xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">scale</span>
+<h3 class="font-label-sm text-label-sm uppercase tracking-wider">Mass Shedding</h3>
+</div>
+<div class="font-display-lg text-[40px] text-on-surface">-2.4 <span class="text-[20px] text-on-surface-variant font-title-md">kg</span></div>
+</div>
+<div class="mt-6">
+<!-- Progress Bar -->
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mb-2">
+<div class="h-full bg-gradient-to-r from-primary to-inverse-primary w-[65%] relative">
+<div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent)] w-[200%] animate-[shimmer-line_2s_infinite]"></div>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>Current Phase</span>
+<span>Target: 5kg</span>
+</div>
+</div>
+</div>
+<!-- Muscle Gain Metrics -->
+<div class="col-span-1 md:col-span-3 glass-panel qi-gradient-border rounded-2xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">fitness_center</span>
+<h3 class="font-label-sm text-label-sm uppercase tracking-wider">Essence Forging</h3>
+</div>
+<div class="font-display-lg text-[40px] text-secondary">+1.1 <span class="text-[20px] text-secondary/60 font-title-md">kg</span></div>
+</div>
+<div class="mt-6 relative h-16 w-full flex items-end">
+<!-- Minimal Bar Chart -->
+<div class="w-full flex items-end justify-between gap-1 h-full opacity-80">
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[30%]"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[45%]"></div>
+<div class="w-full bg-surface-container-highest rounded-t-sm h-[40%]"></div>
+<div class="w-full bg-secondary/50 rounded-t-sm h-[60%] border-t border-secondary"></div>
+<div class="w-full bg-secondary rounded-t-sm h-[85%] shadow-[0_-5px_10px_rgba(255,183,125,0.2)]"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/90 backdrop-blur-lg z-50 rounded-t-full border-t border-primary/30 shadow-[0_-4px_20px_rgba(109,40,217,0.2)] tap-highlight-transparent">
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">home</span>
+<span class="font-label-sm text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">exercise</span>
+<span class="font-label-sm text-[10px]">Train</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">restaurant_menu</span>
+<span class="font-label-sm text-[10px]">Eat</span>
+</a>
+<!-- Active: Rank (Closest semantic match for Tier/Progress on mobile nav) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform relative overflow-hidden" href="#">
+<div class="absolute inset-0 bg-white/5"></div>
+<span class="material-symbols-outlined mb-1 text-[24px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-sm text-[10px] font-bold">Rank</span>
+</a>
+<!-- Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">more_horiz</span>
+<span class="font-label-sm text-[10px]">More</span>
+</a>
+</nav>
+</body></html>
